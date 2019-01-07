@@ -1,0 +1,72 @@
+buildscript {
+    repositories{
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.2.4'
+    }
+}
+// 依赖的插件
+plugins {
+    id 'java'
+    id 'war'
+    id 'idea'
+    id 'maven'
+}
+
+if (!project.plugins.findPlugin(org.akhikhl.gretty.GrettyPlugin))
+    project.apply(plugin: org.akhikhl.gretty.GrettyPlugin)
+apply plugin: 'org.akhikhl.gretty'
+
+group ' com.xsh'
+version '1.0'
+
+// 源码的编译版本
+sourceCompatibility = 1.8
+// 目标代码的编译版本
+targetCompatibility = 1.8 
+/**
+ *  从中央仓库拉去jar包
+ */
+
+
+repositories {
+    mavenCentral()
+}
+/* 先从从本地私服加载
+dependencies {
+    repositories {
+        maven {
+            url: 'http://nexus.mycompany.com/nexus/public'
+        }
+    }
+}
+*/
+
+dependencies {
+    /*
+        testCompile group: 'junit', name: 'junit', version: '4.11'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    */
+    providedCompile 'javax.servlet:servlet-api:2.5'
+    compile 'org.springframework:spring-context:4.2.6.RELEASE'
+}
+
+gretty {
+    httpEnabled = true;
+    servletContainer = "tomcat8"
+    contextPath = "/mygradle"
+    host = "localhost"
+    /*serlvetContainer = "tomcat8"*/
+    httpPort = 8080
+    scanInterval = 1
+    fastReload = true
+    inplaceMode = "soft"
+    loggingLevel = "DEBUG"
+    consoleLogEnabled true
+
+    /*远程调试端口  */
+    debugPort = 6005
+    /*调试的时候是不是会让他挂起 */
+    debugSuspend = true
+}
